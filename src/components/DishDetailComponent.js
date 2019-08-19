@@ -27,13 +27,14 @@ class DishDetail extends Component {
         return (
           <React.Fragment>
             <p>{c.comment}</p>
-            <p>-- {c.author}, {c.date}</p>
+            <p>-- {c.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(c.date)))}</p>
           </React.Fragment>
         )
       });
   
       return (
         <div>
+          <h4>Comments</h4>
           {comments}
         </div>  
       );
@@ -46,13 +47,14 @@ class DishDetail extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">
-          {this.renderDish()}
-        </div>
-        <div className="col-12 col-md-5 m-1">
-          <h4>Comments</h4>
-          {this.renderComments()}
+      <div className="container">
+        <div className="row">
+          <div className="col-12 col-md-5 m-1">
+            {this.renderDish()}
+          </div>
+          <div className="col-12 col-md-5 m-1">
+            {this.renderComments()}
+          </div>
         </div>
       </div>
     );
