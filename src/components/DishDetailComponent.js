@@ -1,64 +1,56 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component {
-  renderDish() {
-    const dish = this.props.dish;
+function RenderDish({dish}) {
+  return (
+    <Card>
+      <CardImg top src={dish.image} alt={dish.name} />
+      <CardBody>
+        <CardTitle>{dish.name}</CardTitle>
+        <CardText>{dish.description}</CardText>
+      </CardBody>
+    </Card>
+  );
+};
 
-    if (dish != null)
-      return(
-        <Card>
-          <CardImg top src={dish.image} alt={dish.name} />
-          <CardBody>
-            <CardTitle>{dish.name}</CardTitle>
-            <CardText>{dish.description}</CardText>
-          </CardBody>
-        </Card>
-      );
-    else
-      return(
-        <div></div>
-      );
-  }
+function RenderComments({comments}) {
+  const commentList = comments.map(c => {
+    return (
+      <React.Fragment>
+        <p>{c.comment}</p>
+        <p>-- {c.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(c.date)))}</p>
+      </React.Fragment>
+    )
+  });
 
-  renderComments() {
-    if (this.props.dish != null) {
-      const comments = this.props.dish.comments.map(c => {
-        return (
-          <React.Fragment>
-            <p>{c.comment}</p>
-            <p>-- {c.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(c.date)))}</p>
-          </React.Fragment>
-        )
-      });
-  
-      return (
-        <div>
-          <h4>Comments</h4>
-          {comments}
-        </div>  
-      );
-    } else {
-      return (
-        <div></div>
-      )
-    }
-  }
+  return (
+    <div>
+      <h4>Comments</h4>
+      {commentList}
+    </div>  
+  );
+}
 
-  render() {
+const  DishDetail = (props) => {
+  if (props.dish != null) {
     return (
       <div className="container">
         <div className="row">
           <div className="col-12 col-md-5 m-1">
-            {this.renderDish()}
+            <RenderDish dish={props.dish} />
           </div>
           <div className="col-12 col-md-5 m-1">
-            {this.renderComments()}
+            <RenderComments comments={props.dish.comments} />
           </div>
         </div>
       </div>
     );
+  } else {
+    return (
+      <div></div>
+    );
   }
+  
 }
 
 export default DishDetail;
