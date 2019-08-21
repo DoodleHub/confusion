@@ -32,7 +32,7 @@ function RenderComments({comments}) {
   );
 }
 
-const  DishDetail = (props) => {
+const DishDetail = (props) => {
   if (props.dish != null) {
     return (
       <div className="container">
