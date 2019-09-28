@@ -15,7 +15,7 @@ function RenderDish({dish}) {
   );
 };
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
   const commentList = comments.map(c => {
     return (
       <React.Fragment>
@@ -29,7 +29,8 @@ function RenderComments({comments}) {
     <div>
       <h4>Comments</h4>
       {commentList}
-    </div>  
+      <CommentForm dishId={dishId} addComment={addComment} />
+    </div>
   );
 }
 
@@ -54,7 +55,7 @@ class CommentForm extends Component {
 
   handleSubmit(values) {
     this.toggleModal();
-    alert(JSON.stringify(values));
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
   }
 
   render() {
@@ -75,6 +76,18 @@ class CommentForm extends Component {
                     <option>4</option>
                     <option>5</option>
                   </Control.select>
+                </Col>
+              </Row>
+              <Row className="form-group">
+                <Col>
+                  <Label htmlFor="author">Your Name</Label>
+                  <Control.text
+                    model=".author"
+                    id="author"
+                    name="author"
+                    placeholder="Your Name"
+                    className="form-control"
+                  />
                 </Col>
               </Row>
               <Row className="form-group">
@@ -118,8 +131,11 @@ const DishDetail = (props) => {
             <RenderDish dish={props.dish} />
           </div>
           <div className="col-12 col-md-5 m-1">
-            <RenderComments comments={props.comments} />
-            <CommentForm dishId={props.dish} />
+            <RenderComments 
+              comments={props.comments}
+              addComment={props.addComment}
+              dishId={props.dish.id}
+            />
           </div>
         </div>
       </div>
